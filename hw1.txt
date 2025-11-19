@@ -1,0 +1,67 @@
+create database store;
+
+create table countries(
+    code int primary key,
+    name varchar(20) unique,
+    continent_name varchar(20) not null
+);
+
+create table users(
+    id int primary key,
+    full_name varchar(20) ,
+    email varchar(20) unique,
+    gender char(1) check (gender = 'm' or gender = 'f'),
+    date_of_birth date,
+    created_at datetime default current_timestamp,
+    country_code int,
+    foreign key (country_code) references countries(code)
+);
+
+create table orders(
+    id int primary key,
+    user_id int,
+    status varchar(6) check (status = 'start' or status='finish'),
+    created_at datetime default current_timestamp,
+    foreign key (user_id) references users(id)
+);
+
+create table products (
+    id int primary key,
+    name varchar(10) not null,
+    price int default 0,
+    status varchar(10) check ( status='valid' or status='expired' ),
+    created_at datetime default current_timestamp
+);
+
+create table order_products (
+    order_id int,
+    product_id int,
+    quantity int default 0,
+    foreign key (product_id) references products(id),
+    foreign key (order_id) references orders(id)
+);
+
+insert into countries values(100,'saudi arabia','Asia');
+insert into countries values(101,'bahrain','Asia');
+insert into countries values(102,'germany','Europe');
+insert into countries values(103,'USA','North America');
+insert into countries values(104,'italy','Europe');
+
+insert into users values (1,'mohammed', 'mohammed@email.com','m','1999-11-11',DEFAULT,100);
+insert into orders values (1,1,'start', DEFAULT);
+insert into products values (1,'phone',1000,'valid',default);
+insert into products values (2,'tv',3300,'valid',default);
+insert into order_products values (1,1,1);
+
+update countries set name='Italy' where code=104;
+update countries set name='Germany' where code=102;
+update countries set name='Bahrain' where code=101;
+update countries set name='Saudi Arabia' where code=100;
+
+delete from products where id =2;
+
+select * from  countries;
+select * from users;
+select * from orders;
+select * from products;
+select * from order_products;
