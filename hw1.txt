@@ -19,7 +19,7 @@ create table users(
 
 create table orders(
     id int primary key,
-    user_id int,
+    user_id int not null,
     status varchar(6) check (status = 'start' or status='finish'),
     created_at datetime default current_timestamp,
     foreign key (user_id) references users(id)
@@ -34,8 +34,8 @@ create table products (
 );
 
 create table order_products (
-    order_id int,
-    product_id int,
+    order_id int not null ,
+    product_id int not null ,
     quantity int default 0,
     foreign key (product_id) references products(id),
     foreign key (order_id) references orders(id)
