@@ -48,10 +48,30 @@ insert into countries values(103,'USA','North America');
 insert into countries values(104,'italy','Europe');
 
 insert into users values (1,'mohammed', 'mohammed@email.com','m','1999-11-11',DEFAULT,100);
-insert into orders values (1,1,'start', DEFAULT);
+insert into users values (2,'ahmed', 'ahmed@email.com','m','1999-11-11',DEFAULT,100);
+insert into users values (3,'khaild', 'khaild@email.com','m','1999-11-11',DEFAULT,100);
+insert into users values (4,'majed', 'majed@email.com','m','1999-11-11',DEFAULT,100);
+insert into users values (5,'sami', 'sami@email.com','m','1999-11-11',DEFAULT,100);
+
 insert into products values (1,'phone',1000,'valid',default);
 insert into products values (2,'tv',3300,'valid',default);
+insert into products values (3,'charger',100,'valid',default);
+insert into products values (4,'book',30,'valid',default);
+insert into products values (5,'tv',3300,'valid',default);
+
+insert into orders values (1,1,'start', DEFAULT);
+insert into orders values (2,2,'start', DEFAULT);
+insert into orders values (3,3,'start', DEFAULT);
+insert into orders values (4,4,'start', DEFAULT);
+insert into orders values (5,5,'start', DEFAULT);
+
+
+
 insert into order_products values (1,1,1);
+insert into order_products values (2,1,1);
+insert into order_products values (3,3,3);
+insert into order_products values (4,4,4);
+insert into order_products values (5,5,5);
 
 update countries set name='Italy' where code=104;
 update countries set name='Germany' where code=102;
@@ -65,3 +85,4 @@ select * from users;
 select * from orders;
 select * from products;
 select * from order_products;
+
