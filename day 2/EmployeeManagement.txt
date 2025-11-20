@@ -97,7 +97,7 @@ create table permission_request(
     foreign key (id) references request(id)
 );
 
-create table Travel_expense(
+create table Travel_expenses(
     id varchar(10) primary key,
     expanse double default 0,
     description varchar(255),
@@ -105,7 +105,7 @@ create table Travel_expense(
     foreign key (travel_id) references Travel_request(id)
 );
 
-alter table Travel_expense rename column expanse to expanses;
+alter table Travel_expenses RENAME to Travel_expense;
 
 insert into department values('1111','R&D team', 'R&D');
 insert into employee values ('1111','ahmed','1989-01-11',
@@ -137,11 +137,10 @@ insert into Travel_request values('1003','Outside',default,'2026-01-01','Germany
 
 insert into travel_expense values ('1003',15000,'germany','1003');
 
-select  from travel_expense;
+select * from travel_expense;
 
 truncate travel_expense;
 delete from Travel_request where id='1003';
 delete from request where id='1003';
-
 
 
