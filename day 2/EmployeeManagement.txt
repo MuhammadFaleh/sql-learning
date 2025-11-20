@@ -1,0 +1,143 @@
+create database employeeManagement;
+
+create table department(
+    id varchar(10) primary key,
+    title varchar(240),
+    type varchar(20) check ( type='HR' or type='R&D' or type='Marketing' or type='Sales' or type='Accounting' or type='IT')
+);
+
+create table employee(
+    id varchar(10) primary key,
+    fullName varchar(250) not null,
+    date_of_birth date not null,
+    gender char(1) check (gender = 'm' or gender = 'f'),
+    title varchar(200),
+    email varchar(250) unique not null,
+    salary double default 0,
+    phone varchar(10) unique,
+    hired_at date default current_date,
+    manager_id varchar(10),
+    department_id varchar(10),
+    foreign key (manager_id) references employee(id),
+    foreign key (department_id) references department(id)
+);
+
+create table leaves(
+    balance int default 20,
+    sick_leave_balance int default 10,
+    last_leave_at date,
+    emp_id varchar(10),
+    foreign key (emp_id) references employee(id)
+);
+
+create table COE(
+    id varchar(10) primary key,
+    name varchar(50),
+    category varchar(50) check ( category='Office equipment' or category='Electronics' or category='Clothing' or category='Vehicles'),
+    status varchar(40) check ( status='leased' or status='available' or status='out of order'),
+    creation_date date default current_date,
+    department_id varchar(10),
+    foreign key (department_id) references department(id)
+);
+
+create table COE_assigned(
+    id varchar(10) primary key,
+    start_date datetime default current_timestamp,
+    end_date datetime,
+    notes_at_assignment varchar(255),
+    notes_at_return varchar(255),
+    COE_id varchar(10),
+    Emp_id varchar(10),
+    foreign key (COE_id) references COE(id),
+    foreign key (Emp_id) references employee(id)
+);
+
+create table request(
+    id varchar(10) primary key,
+    type varchar(30) check ( type='Leave' or type='COE' or type='Travel' or type='Permission'  ),
+    creation_date datetime default current_timestamp,
+    end_date datetime,
+    status varchar(20) check ( status='Approved' or status='Rejected' or status='Pending'),
+    approved_by varchar(10),
+    Emp_id varchar(10),
+    foreign key (approved_by) references employee(id),
+    foreign key (Emp_id) references employee(id)
+);
+
+create table vacation_request(
+    id varchar(10) primary key,
+    type varchar(30) check ( type='Sick leave' or type='Normal' ),
+    start_date datetime default current_timestamp,
+    end_date datetime,
+    reason varchar(254),
+    foreign key (id) references request(id)
+);
+create table Travel_request(
+    id varchar(10) primary key,
+    type varchar(30) check ( type='Inside' or type='Outside' ),
+    start_date datetime default current_timestamp,
+    end_date datetime,
+    destination varchar(254),
+    reason varchar(254),
+    foreign key (id) references request(id)
+);
+create table COE_request(
+    id varchar(10) primary key,
+    COE_id varchar(10) not null,
+    foreign key (id) references request(id),
+    foreign key (COE_id) references COE(id)
+);
+create table permission_request(
+    id varchar(10) primary key,
+    type varchar(30) check ( type='Query' or type='Update' or type='Delete' or type='Create'  ),
+    start_date datetime default current_timestamp,
+    end_date datetime,
+    reason varchar(255),
+    foreign key (id) references request(id)
+);
+
+create table Travel_expense(
+    id varchar(10) primary key,
+    expanse double default 0,
+    description varchar(255),
+    travel_id varchar(10),
+    foreign key (travel_id) references Travel_request(id)
+);
+
+insert into department values('1111','R&D team', 'R&D');
+insert into employee values ('1111','ahmed','1989-01-11',
+                             'm','Head of R&D','ahmed1@Rd.com',55000,'056555555','2020-01-10',
+                             null,'1111');
+insert into employee values ('1112','Mohammed almutiri','1995-01-11',
+                             'm','Lead AI enginner','mohammed@Rd.com',25000,'056555552','2020-01-10',
+                             '1111','1111');
+
+insert into leaves values(default,default,'2025-10-10','1112');
+
+insert into COE values ('1022','Laptop','Electronics','available','2025-10-10','1111');
+
+insert into request values ('1000','COE', default,null,'Pending','1111','1112');
+
+insert into COE_request values ('1000','1022');
+
+update COE set status ='leased' where id='1022';
+update request set status='Approved' where id='1000';
+insert COE_assigned values ('1022',default,null,'new',null,'1022','1112');
+
+insert into request values ('1001','Leave', default,null,'Pending','1111','1112');
+
+insert into request values ('1002','Permission', default,null,'Pending','1111','1112');
+
+insert into request values ('1003','Travel', default,null,'Approved','1111','1112');
+
+insert into Travel_request values('1003','Outside',default,'2026-01-01','Germany','R&D related research');
+
+insert into travel_expense values ('1003',15000,'germany','1003');
+
+select  from travel_expense;
+
+truncate travel_expense;
+delete from Travel_request where id='1003';
+delete from request where id='1003';
+
+
