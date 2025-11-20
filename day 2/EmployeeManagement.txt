@@ -1,3 +1,4 @@
+drop database employeeManagement;
 create database employeeManagement;
 
 create table department(
@@ -104,6 +105,8 @@ create table Travel_expense(
     foreign key (travel_id) references Travel_request(id)
 );
 
+alter table Travel_expense rename column expanse to expanses;
+
 insert into department values('1111','R&D team', 'R&D');
 insert into employee values ('1111','ahmed','1989-01-11',
                              'm','Head of R&D','ahmed1@Rd.com',55000,'056555555','2020-01-10',
@@ -139,5 +142,6 @@ select  from travel_expense;
 truncate travel_expense;
 delete from Travel_request where id='1003';
 delete from request where id='1003';
+
 
 
